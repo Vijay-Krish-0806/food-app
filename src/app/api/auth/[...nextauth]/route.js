@@ -2,7 +2,7 @@ import clientPromise from '../../../../libs/MongoConnect';
 import mongoose from 'mongoose';
 import { User } from '../../../../models/User';
 import NextAuth, { getServerSession } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials'
+import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 
@@ -17,7 +17,6 @@ export const authOptions = {
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         }),
-
     ],
     callbacks: {
         async jwt({ token, user }) {
@@ -38,6 +37,8 @@ export const authOptions = {
         },
     }
 };
+
+// Named export for isAdmin function
 export async function isAdmin() {
     const session = await getServerSession(authOptions);
     const userEmail = session?.user?.email;
@@ -51,6 +52,7 @@ export async function isAdmin() {
     return userInfo.admin === true;
 }
 
+// Route handler for NextAuth
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
